@@ -2,6 +2,7 @@ options nodate;
 ods noproctitle; 
  
 libname opioid "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data";
+libname cleaned "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\cleaned";
 
 data mortality_99_02; 
 	set opioid.mortality99 opioid.mortality00 opioid.mortality01 opioid.mortality02; 
@@ -143,7 +144,7 @@ data mortality_99_02;
 	set mortality_99_02; 
 run; 
 
-* stacking 99 to 02 and 03 to 16 and removing non-relevant deaths; 
+* stacking 99 to 02 and 03 to 16 and removing non-relevant deaths / other cleaning; 
 
 data all_poisoning; 
 	set mortality_99_02 mortality_03_16; 
@@ -156,3 +157,144 @@ data all_poisoning;
 	county = (state * 1000) + county_fips; 
 	drop county_fips; 
 run; 
+
+data all_poisoning; 
+	retain state county year;  
+	set all_poisoning; 
+
+	if 1 =< hispanic <= 5 then hispanic = 1; 
+		else if 6 =< hispanic <= 9 then hispanic = 0; 
+
+	if place = 1 then place_code = "hospital_inpatient"; 
+		else if place = 2 then place_code = "hospital_outpatient"; 
+		else if place = 3 then place_code = "hospital_DOA"; 
+		else if (place = 4 and year >= 2003) or (place = 6 and year < 2003) then place_code = "home"; 
+		else place_code = "other"; 
+		drop place; 
+		rename place_code = place;  
+run;
+
+data all_poisoning;
+	retain state county year age sex race hispanic education marital_status month day place; 
+	set all_poisoning; 
+run; 
+
+* creating specific drug related variables; 
+
+data all_poisoning; 
+	set all_poisoning; 
+
+	narcotic = 0; 
+	any_opioid = 0; 
+	opioid_anal = 0; 
+	heroin = 0; 
+	natural_opioid = 0; 
+	meth = 0; 
+	synthetic_opioid = 0; 
+	opioid_anal_nonMethodone = 0; 
+	cocaine = 0; 
+	other_narcotic = 0; 
+	non_opioid_analgesic = 0; 
+	sedative = 0; 
+	benzo = 0; 
+	other_sed = 0; 
+	psy_tropic = 0; 
+	anti_depress = 0; 
+	anti_psych = 0; 
+	psych_stim = 0; 
+	unspecified = 0; 
+	other_drug = 0; 
+	alcohol = 0; 
+	ethanol = 0; 
+
+	array rec_array {*} $ rec1 - rec20; 
+	do i = 1 to dim(rec_array); 
+		if rec_array{i} in ("T400", "T401", "T402", "T403", "T404", "T405", "T406", "T407", "T408", "T409")
+			then narcotic = 1; 
+
+		if rec_array{i} in ("T400", "T401", "T402", "T403", "T404", "T406")
+			then any_opioid = 1; 
+
+		if rec_array{i} in ("T402", "T403", "T404")
+			then opioid_anal = 1; 
+
+		if rec_array{i} = "T401"
+			then heroin = 1; 
+
+		if rec_array{i} = "T402" 
+			then natural_opioid = 1; 
+
+		if rec_array{i} = "T403" 
+			then meth = 1; 
+
+		if rec_array{i} = "T404"
+			then synthetic_opioid = 1; 
+
+		if rec_array{i} in ("T402", "T404") 
+			then opioid_anal_nonMethodone = 1; 
+
+		if rec_array{i} = "T405" 
+			then cocaine = 1; 
+
+		if rec_array{i} in ("T406", "T407", "T408", "T409", "T400")
+			then other_narcotic = 1; 
+
+		if rec_array{i} in ("T400", "T401", "T405", "T406", "T407", "T408", "T409")
+			then non_opioid_analgesic = 1; 
+
+		if rec_array{i} in ("T420", "T421", "T422", "T423", "T424", "T425", "T426", "T427", "T428")
+			then sedative = 1; 
+
+		if rec_array{i} = "T424"
+			then benzo = 1; 
+
+		if rec_array{i} in ("T420", "T421", "T422", "T423", "T425", "T426", "T427", "T428")
+			then other_sed = 1;
+
+		if rec_array{i} in ("T430", "T431", "T432", "T433", "T434", "T435", "T436", "T437", "T438", "T439")
+			then psy_tropic = 1; 
+
+		if rec_array{i} in ("T430", "T431", "T432")
+			then anti_depress = 1;
+
+		if rec_array{i} in ("T433", "T434", "T435")
+			then anti_psych = 1; 
+
+		if rec_array{i} = "T436"
+			then psych_stim = 1; 
+
+		if rec_array{i} = "T509" 
+			then unspecified = 1; 
+
+		if rec_array{i} in ("T510", "T511", "T512", "T513", "T514")
+			then alcohol = 1; 
+
+		if rec_array{i} = "T510"
+			then ethanol = 1;
+
+		if rec_array{i} in ("T360", "T361", "T362", "T363", "T364", "T365", "T366", "T367", "T368", "T369", 
+							"T370", "T371", "T372", "T373", "T374", "T375", "T376", "T377", "T378", "T379", 
+							"T380", "T381", "T382", "T383", "T384", "T385", "T386", "T387", "T388", "T389", 
+							"T410", "T411", "T412", "T413", "T414", "T415", "T416", "T417", "T418", "T419", 
+							"T440", "T441", "T442", "T443", "T444", "T445", "T446", "T447", "T448", "T449", 
+							"T450", "T451", "T452", "T453", "T454", "T455", "T456", "T457", "T458", "T459", 
+							"T460", "T461", "T462", "T463", "T464", "T465", "T466", "T467", "T468", "T469", 
+							"T470", "T471", "T472", "T473", "T474", "T475", "T476", "T477", "T478", "T479", 
+							"T480", "T481", "T482", "T482", "T484", "T485", "T486", "T487", "T490", "T491", 
+							"T492", "T493", "T494", "T495", "T496", "T497", "T498", "T499", "T500", "T501", 
+							"T502", "T503", "T504", "T505", "T506", "T507", "T508")
+			then other_drug = 1; 
+	end;
+	drop i;  
+run; 
+
+* creating variable that identifies deaths where no drug has been specified in poisoning; 
+
+data cleaned.all_poisoning; 
+	set all_poisoning; 
+	if (any_opioid = 0 and non_opioid_analgesic = 0 and sedative = 0 
+		and psy_tropic = 0 and other_drug = 0 and unspecified = 1) 
+		then only_unspecified = 1; 
+		else only_unspecified = 0; 
+run; 
+ 
