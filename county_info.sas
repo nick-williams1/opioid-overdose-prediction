@@ -1,12 +1,14 @@
-﻿options nodate; 
+options nodate; 
 ods noproctitle; 
 
 libname county "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\county";
+libname raw "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\raw";
+libname cleaned "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\cleaned";
 
 * AHRF cleaning (AHRF was imported as a SAS dataset using a SAS script supplied by mainteners of dataset); 
 
 data ahrf; 
-	set opioid.ahrf; 
+	set raw.ahrf; 
 	
 	if f00008 = "Guam" then delete; 
 	if f00008 = "Puerto Rico" then delete; 
@@ -33,7 +35,7 @@ run;
 * SAIPE - poverty rate and median income; 
 
 proc import out = saipe
-	datafile = "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\poverty_income_saipe.xls"
+	datafile = "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\raw\poverty_income_saipe.xls"
 	dbms = xls replace; 
 	getnames = yes; 
 run;
@@ -55,7 +57,7 @@ run;
 * education shares; 
 
 proc import out = education
-	datafile = "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\education_shares.xls"
+	datafile = "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\raw\education_shares.xls"
 	dbms = xls replace; 
 	getnames = yes; 
 run; 

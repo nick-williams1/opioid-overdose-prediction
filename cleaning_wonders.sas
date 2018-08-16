@@ -1,11 +1,12 @@
-﻿options nodate; 
+options nodate; 
 ods noproctitle; 
  
-libname opioid "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data";
+libname raw "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\raw";
 libname cleaned "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\cleaned";
+libname county "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\county";
 
 data mortality_99_02; 
-	set opioid.mortality99 opioid.mortality00 opioid.mortality01 opioid.mortality02; 
+	set raw.mortality99 raw.mortality00 raw.mortality01 raw.mortality02; 
 
 	if residence = 4 then delete; 
 	drop residence; 
@@ -46,9 +47,9 @@ data mortality_99_02;
 run; 
 
 data mortality_03_16; 
-	set opioid.mortality04 opioid.mortality05 opioid.mortality06 opioid.mortality07 opioid.mortality08
-		opioid.mortality09 opioid.mortality10 opioid.mortality11 opioid.mortality12 opioid.mortality13
-		opioid.mortality14 opioid.mortality15 opioid.mortality16; 
+	set raw.mortality03 raw.mortality04 raw.mortality05 raw.mortality06 raw.mortality07 
+		raw.mortality08 raw.mortality09 raw.mortality10 raw.mortality11 raw.mortality12 
+		raw.mortality13 raw.mortality14 raw.mortality15 raw.mortality16; 
 
 	if residence = 4 then delete; 
 	drop residence; 
@@ -297,4 +298,49 @@ data cleaned.all_poisoning;
 		then only_unspecified = 1; 
 		else only_unspecified = 0; 
 run; 
+
+* merging mortality data and county level information; 
+
+proc sort data = cleaned.all_poisoning; 
+	by county; 
+run; 
+
+proc sort data = cleaned.county_info; 
+	by county; 
+run; 
+
+data cleaned.all_poisoning_county; 
+	merge cleaned.all_poisoning cleaned.county_info; 
+	by county; 
+	if only_unspecified = . then delete; 
+run; 
+
+* splitting dataset into year specific sets; 
+
+data	cleaned.poisoning99 cleaned.poisoning00 cleaned.poisoning01 cleaned.poisoning02 cleaned.poisoning03
+        cleaned.poisoning04 cleaned.poisoning05 cleaned.poisoning06 cleaned.poisoning07 cleaned.poisoning08
+        cleaned.poisoning09 cleaned.poisoning10 cleaned.poisoning11 cleaned.poisoning12 cleaned.poisoning13
+	    cleaned.poisoning14 cleaned.poisoning15 cleaned.poisoning16; 
+	set cleaned.all_poisoning_county; 
+
+	if year = 1999 then output cleaned.poisoning99; 
+	if year = 2000 then output cleaned.poisoning00; 
+	if year = 2001 then output cleaned.poisoning01; 
+	if year = 2002 then output cleaned.poisoning02; 
+	if year = 2003 then output cleaned.poisoning03; 
+	if year = 2004 then output cleaned.poisoning04;
+	if year = 2005 then output cleaned.poisoning05; 
+	if year = 2006 then output cleaned.poisoning06; 
+	if year = 2007 then output cleaned.poisoning07; 
+	if year = 2008 then output cleaned.poisoning08; 
+	if year = 2009 then output cleaned.poisoning09; 
+	if year = 2010 then output cleaned.poisoning10; 
+	if year = 2011 then output cleaned.poisoning11; 
+	if year = 2012 then output cleaned.poisoning12; 
+	if year = 2013 then output cleaned.poisoning13; 
+	if year = 2014 then output cleaned.poisoning14; 
+	if year = 2015 then output cleaned.poisoning15; 
+	if year = 2016 then output cleaned.poisoning16; 
+run; 
+
  

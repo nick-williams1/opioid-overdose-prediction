@@ -1,12 +1,12 @@
-﻿ods noproctitle; 
+ods noproctitle; 
 options nodate; 
 
-libname opioid "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data";
+libname raw "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\raw";
 
 * importing 1999 - 2002 data; 
 
-data opioid.mortality99; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\1999\Mort99p2";
+data raw.mortality99; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\1999\Mort99p2";
 	input @20 residence 1.
 		  @52 education 2.
 		  @55 month 2.
@@ -15,7 +15,7 @@ data opioid.mortality99;
 		  @64 age_1 1.
 		  @65 age_2 2.
 		  @75 place 1.
-		  @77 marital_status 1.
+		  @77 marital 1.
 		  @82 hispanic 1.
 		  @83 day 1.
 		  @124 state 2.
@@ -43,10 +43,11 @@ data opioid.mortality99;
 		  @426 rec18 $5.
 		  @431 rec19 $5.
 		  @436 rec20 $5.;
+	year = 1999; 
 run; 
 
-data opioid.mortality00; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2000\MORT00US.PT2" truncover;
+data raw.mortality00; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2000\MORT00US.PT2" truncover;
 	input @20 residence 1.
 		  @52 education 2.
 		  @55 month 2.
@@ -55,7 +56,7 @@ data opioid.mortality00;
 		  @64 age_1 1.
 		  @65 age_2 2.
 		  @75 place 1.
-		  @77 marital_status 1.
+		  @77 marital 1.
 		  @82 hispanic 1.
 		  @83 day 1.
 		  @124 state 2.
@@ -83,10 +84,11 @@ data opioid.mortality00;
 		  @426 rec18 $5.
 		  @431 rec19 $5.
 		  @436 rec20 $5.;
+	year = 2000; 
 run; 
 
-data opioid.mortality01; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2001\Mort01us.dat";
+data raw.mortality01; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2001\Mort01us.dat";
 	input @20 residence 1.
 		  @52 education 2.
 		  @55 month 2.
@@ -95,7 +97,7 @@ data opioid.mortality01;
 		  @64 age_1 1.
 		  @65 age_2 2.
 		  @75 place 1.
-		  @77 marital_status 1.
+		  @77 marital 1.
 		  @82 hispanic 1.
 		  @83 day 1.
 		  @124 state 2.
@@ -123,10 +125,11 @@ data opioid.mortality01;
 		  @426 rec18 $5.
 		  @431 rec19 $5.
 		  @436 rec20 $5.;
+	year = 2001; 
 run; 
 
-data opioid.mortality02; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2002\Mort02us.dat";
+data raw.mortality02; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2002\Mort02us.dat";
 	input @20 residence 1.
 		  @52 education 2.
 		  @55 month 2.
@@ -135,7 +138,7 @@ data opioid.mortality02;
 		  @64 age_1 1.
 		  @65 age_2 2.
 		  @75 place 1.
-		  @77 marital_status 1.
+		  @77 marital 1.
 		  @82 hispanic 1.
 		  @83 day 1.
 		  @124 state 2.
@@ -163,26 +166,27 @@ data opioid.mortality02;
 		  @426 rec18 $5.
 		  @431 rec19 $5.
 		  @436 rec20 $5.;
+	year = 2002; 
 run; 
 
 
 * importing 2003 - 2016 data; 
 
-data opioid.mortality03; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2003\Mult03us.dat"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality03; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2003\Mult03us.dat"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -209,23 +213,24 @@ data opioid.mortality03;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2003; 
 run; 
 
-data opioid.mortality04; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2004\Mort04us.dat"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality04; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2004\Mort04us.dat"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -252,23 +257,24 @@ data opioid.mortality04;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2004; 
 run;
 
-data opioid.mortality05; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2005\Mort05usp2.dat"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality05; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2005\Mort05usp2.dat"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -295,23 +301,24 @@ data opioid.mortality05;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2005; 
 run;
 
-data opioid.mortality06; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2006\MULT2006.uspart2"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality06; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2006\MULT2006.uspart2"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -338,23 +345,24 @@ data opioid.mortality06;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2006; 
 run;
 
-data opioid.mortality07; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2007\MULT2007.uspart2"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality07; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2007\MULT2007.uspart2"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -381,23 +389,24 @@ data opioid.mortality07;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2007; 
 run;
 
-data opioid.mortality08; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2008\MULT2008.uspart2"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality08; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2008\MULT2008.uspart2"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -424,23 +433,24 @@ data opioid.mortality08;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2008; 
 run;
 
-data opioid.mortality09; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2009\MULT2009.uspart2"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality09; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2009\MULT2009.uspart2"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -467,23 +477,24 @@ data opioid.mortality09;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2009; 
 run;
 
-data opioid.mortality10; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2010\MULT2010.uspart2"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality10; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2010\MULT2010.uspart2"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -510,23 +521,24 @@ data opioid.mortality10;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2010; 
 run;
 
-data opioid.mortality11; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2011\MULT2011.uspart2"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality11; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2011\MULT2011.uspart2"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -553,23 +565,24 @@ data opioid.mortality11;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2011; 
 run;
 
-data opioid.mortality12; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2012\MULT2012.uspart2"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality12; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2012\MULT2012.uspart2"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -596,23 +609,24 @@ data opioid.mortality12;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2012; 
 run;
 
-data opioid.mortality13; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2013\MULT2013.uspart2"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality13; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2013\MULT2013.uspart2"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -639,23 +653,24 @@ data opioid.mortality13;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2013; 
 run;
 
-data opioid.mortality14; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2014\MULT2014.uspart2" truncover; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality14; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2014\MULT2014.uspart2" truncover; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -682,23 +697,24 @@ data opioid.mortality14;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2014; 
 run;
 
-data opioid.mortality15; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2015\MULT2015.uspart2" truncover; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality15; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2015\MULT2015.uspart2" truncover; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -725,23 +741,24 @@ data opioid.mortality15;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2015; 
 run;
 
-data opioid.mortality16; 
-	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\2016\MULT2016.USAllCnty.txt"; 
-	input @20 residence $1.
-		  @29 state $2.
+data raw.mortality16; 
+	infile "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\extracted\2016\MULT2016.USAllCnty.txt"; 
+	input @20 residence 1.
+		  @29 state_name $2.
 		  @35 county_fips 3.
-		  @61 educ_1 $2.
-		  @63 educ_2 $1.
-		  @64 educ_flag $1.
-		  @65 month $2.
+		  @61 educ_1 2.
+		  @63 educ_2 1.
+		  @64 educ_flag 1.
+		  @65 month 2.
 		  @69 sex $1.
 		  @70 age_1 1.
 		  @71 age_2 3. 
-		  @83 place $1.
+		  @83 place 1.
 		  @84 marital_status $1.
-		  @85 day $1.
+		  @85 day 1.
 		  @109 autopsy $1.
 		  @146 icd10 $4.
 		  @154 recode113 3.
@@ -768,4 +785,5 @@ data opioid.mortality16;
 		  @429 rec18 $5.
 		  @434 rec19 $5.
 		  @439 rec20 $5.;
+	year = 2016; 
 run;
