@@ -315,6 +315,22 @@ data cleaned.all_poisoning_county;
 	if only_unspecified = . then delete; 
 run; 
 
+* creating simplified categories for age and marital status following Ruhm.; 
+
+data cleaned.all_poisoning_county; 
+	set cleaned.all_poisoning_county; 
+	if marital_status = "M" then mar_cat = "Married    "; 
+		else mar_cat = "Not married"; 
+
+	if age <= 30 then age_cat = "<31     "; 
+		else if 31 =< age <= 40 then age_cat = "31-40"; 
+		else if 41 =< age <= 50 then age_cat = "41-50"; 
+		else if 51 =< age <= 60 then age_cat = "51-60"; 
+		else if 61 =< age <= 70 then age_cat = "61-70"; 
+		else if 71 =< age <= 80 then age_cat = "71-80"; 
+		else age_cat = ">80"; 
+run; 
+
 * splitting dataset into year specific sets; 
 
 data	cleaned.poisoning99 cleaned.poisoning00 cleaned.poisoning01 cleaned.poisoning02 cleaned.poisoning03
@@ -343,4 +359,8 @@ data	cleaned.poisoning99 cleaned.poisoning00 cleaned.poisoning01 cleaned.poisoni
 	if year = 2016 then output cleaned.poisoning16; 
 run; 
 
- 
+* obtaining un-corrected opioid death counts by year; 
+
+proc freq data = cleaned.all_poisoning_county; 
+	table year*any_opioid / nocol norow nopercent; 
+run;
