@@ -1,71 +1,58 @@
-
 library(e1071)
-library(haven)
-library(dplyr)
+library(caret)
 
-setwd("C:/Users/niwi8/OneDrive/Documents/Practicum/opioid_prediction/data/cleaned/by_year")
+# svm models by year for any opioid use
 
-# using a for loop to import all overdose data files into a list called list.data
+df.train[[1]]$any_opioid <- as.factor(df.train[[1]]$any_opioid)
+df.test[[1]]$any_opioid <- as.factor(df.test[[1]]$any_opioid)
+data.predict[[1]]$any_opioid <- as.factor(data.predict[[1]]$any_opioid)
 
-dat <- list.files(path = "C:/Users/niwi8/OneDrive/Documents/Practicum/opioid_prediction/data/cleaned/by_year", 
-                  pattern = "poisoning")
+svm_00 <- svm(
+  any_opioid ~ pop_density +
+    dens_sq +
+    phys +
+    percent_female_head +
+    income +
+    poverty_rate +
+    sex_dummy +
+    race1 +
+    race2 +
+    mar_dummy +
+    educ1 +
+    educ2 +
+    educ3 +
+    educ4 +
+    age1 +
+    age2 +
+    age3 +
+    age4 +
+    age5 +
+    age6 +
+    day1 +
+    day2 +
+    day3 +
+    day4 +
+    day5 +
+    day6 +
+    day7 +
+    place1 +
+    place2 +
+    place3 +
+    place4,
+  data = df.train[[1]],
+  scale = FALSE,
+  kernel = "radial",
+  gamma = 1,
+  cost = 0.1
+)
 
+confusionMatrix(df.train[[1]]$any_opioid, predict(svm_00), 
+                positive = "1")
 
-list.data <- list()
+predict00 <- predict(svm_00, df.test[[1]])
 
-for (i in 1:length(dat))  {
-  list.data[[i]] <- read_sas(dat[i])
-}
+confusionMatrix(df.test[[1]]$any_opioid, predict00, 
+                positive = "1")
 
-names(list.data) <- (c("poisoning00", "poisoning01", "poisoning02", "poisoning03", "poisoning04", 
-                       "poisoning05", "poisoning06", "poisoning07", "poisoning08", "poisoning09", 
-                       "poisoning10", "poisoning11", "poisoning12", "poisoning13", "poisoning14", 
-                       "poisoning15", "poisoning16", "poisoning99"))
-
-# factoring over all categorical variables across all datasets in list.data using a for loop
-
-for (i in 1:length(list.data)) {
-  list.data[[i]]$age_cat <- as.factor(list.data[[i]]$age_cat)
-  list.data[[i]]$sex <- as.factor(list.data[[i]]$sex)
-  list.data[[i]]$race <- as.factor(list.data[[i]]$race) 
-  list.data[[i]]$hispanic <- as.factor(list.data[[i]]$hispanic)
-  list.data[[i]]$education <- as.factor(list.data[[i]]$education)
-  list.data[[i]]$mar_cat <- as.factor(list.data[[i]]$mar_cat)
-  list.data[[i]]$day <- as.factor(list.data[[i]]$day)
-  list.data[[i]]$place <- as.factor(list.data[[i]]$place)
-  list.data[[i]]$any_opioid <- as.factor(list.data[[i]]$any_opioid)
-  list.data[[i]]$only_unspecified <- as.factor(list.data[[i]]$only_unspecified)
-}
-
-#separating all data sets into training and testing versions
-
-data.train <- list()
-data.test <- list()
-
-for (i in 1:length(list.data)) {
-  data.train[[i]] <- list.data[[i]] %>% 
-    filter(only_unspecified == "0") 
-  data.test[[i]] <- list.data[[i]] %>% 
-    filter(only_unspecified == "1")
-}
-
-names(data.train) <- (c("poisoning00", "poisoning01", "poisoning02", "poisoning03", "poisoning04", 
-                       "poisoning05", "poisoning06", "poisoning07", "poisoning08", "poisoning09", 
-                       "poisoning10", "poisoning11", "poisoning12", "poisoning13", "poisoning14", 
-                       "poisoning15", "poisoning16", "poisoning99"))
-names(data.test) <- (c("poisoning00", "poisoning01", "poisoning02", "poisoning03", "poisoning04", 
-                       "poisoning05", "poisoning06", "poisoning07", "poisoning08", "poisoning09", 
-                       "poisoning10", "poisoning11", "poisoning12", "poisoning13", "poisoning14", 
-                       "poisoning15", "poisoning16", "poisoning99"))
- 
-
-
-
-
-
-
-
-
-
-
+x <- predict(svm_00, data.predict[[1]])
 
