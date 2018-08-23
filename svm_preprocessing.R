@@ -1,8 +1,5 @@
 library(haven)
 library(dplyr)
-library(caret)
-library(forcats)
-library(fastDummies)
 
 setwd("C:/Users/niwi8/OneDrive - cumc.columbia.edu/Practicum/opioid_prediction/data/cleaned/by_year")
 
@@ -16,44 +13,45 @@ for (i in 1:length(dat)) {
   list.data[[i]] <- read_sas(dat[i])
 }
 
-names(list.data) <- (c("poisoning00", "poisoning01", "poisoning02", "poisoning03", "poisoning04", 
-                       "poisoning05", "poisoning06", "poisoning07", "poisoning08", "poisoning09", 
-                       "poisoning10", "poisoning11", "poisoning12", "poisoning13", "poisoning14", 
-                       "poisoning15", "poisoning16", "poisoning99"))
+f <- c(
+  "poisoning00",
+  "poisoning01",
+  "poisoning02",
+  "poisoning03",
+  "poisoning04",
+  "poisoning05",
+  "poisoning06",
+  "poisoning07",
+  "poisoning08",
+  "poisoning09",
+  "poisoning10",
+  "poisoning11",
+  "poisoning12",
+  "poisoning13",
+  "poisoning14",
+  "poisoning15",
+  "poisoning16",
+  "poisoning99"
+)
 
-# factoring over all categorical variables across all datasets in list.data and creating dummy variables
-
-for (i in 1:length(list.data)) {
-  list.data[[i]]$age_cat <- as.factor(list.data[[i]]$age_cat)
-  list.data[[i]]$sex <- as.factor(list.data[[i]]$sex)
-  list.data[[i]]$race <- as.factor(list.data[[i]]$race) 
-  list.data[[i]]$hispanic <- as.factor(list.data[[i]]$hispanic)
-  list.data[[i]]$education <- as.factor(list.data[[i]]$education)
-  list.data[[i]]$mar_cat <- as.factor(list.data[[i]]$mar_cat)
-  list.data[[i]]$day <- as.factor(list.data[[i]]$day)
-  list.data[[i]]$place <- as.factor(list.data[[i]]$place)
-  list.data[[i]]$any_opioid <- as.factor(list.data[[i]]$any_opioid)
-  list.data[[i]]$only_unspecified <- as.factor(list.data[[i]]$only_unspecified)
-}
-
-need_dummy <- c("age_cat", "sex", "race", "hispanic", "education", "mar_cat", "day", "place")
-
-for (i in 1:length(list.data)) {
-  list.data[[i]] <- dummy_cols(list.data[[i]], 
-                               select_columns = need_dummy, 
-                               remove_first_dummy = TRUE) 
-}
+names(list.data) <- f
 
 # using min-max standardization for continuous variables
 
-s <- c("poverty_rate", "phys", "percent_female_head", "pop_density", "dens_sq", "income")
+b <-
+  c("poverty_rate",
+    "phys",
+    "percent_female_head",
+    "pop_density",
+    "dens_sq",
+    "income")
 
 normalize <- function(x) {
   return ((x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE)))
 }
 
 for (i in 1:length(list.data)) {
-  for (j in need_double) {
+  for (j in b) {
     list.data[[i]][, j] <- normalize(list.data[[i]][, j])
   }
 }
@@ -70,47 +68,101 @@ for (i in 1:length(list.data)) {
     filter(only_unspecified == "1")
 }
 
-names(data.train) <- (c("poisoning00", "poisoning01", "poisoning02", "poisoning03", "poisoning04", 
-                        "poisoning05", "poisoning06", "poisoning07", "poisoning08", "poisoning09", 
-                        "poisoning10", "poisoning11", "poisoning12", "poisoning13", "poisoning14", 
-                        "poisoning15", "poisoning16", "poisoning99"))
-names(data.predict) <- (c("poisoning00", "poisoning01", "poisoning02", "poisoning03", "poisoning04", 
-                          "poisoning05", "poisoning06", "poisoning07", "poisoning08", "poisoning09", 
-                          "poisoning10", "poisoning11", "poisoning12", "poisoning13", "poisoning14", 
-                          "poisoning15", "poisoning16", "poisoning99"))
+names(data.train) <- f
+names(data.predict) <- f
+
+for (i in 1:length(data.train)) {
+  data.train[[i]] <- data.train[[i]] %>% 
+    select(state, 
+           county, 
+           year, 
+           any_opioid, 
+           only_unspecified,
+           pop_density, 
+           dens_sq, 
+           phys, 
+           percent_female_head, 
+           income, 
+           poverty_rate, 
+           sex_dummy, 
+           race1, 
+           race2, 
+           mar_dummy, 
+           educ1, 
+           educ2, 
+           educ3, 
+           educ4, 
+           age1, 
+           age2, 
+           age3, 
+           age4, 
+           age5, 
+           age6, 
+           day1, 
+           day2, 
+           day3, 
+           day4, 
+           day5, 
+           day6, 
+           day7, 
+           place1, 
+           place2, 
+           place3, 
+           place4
+           )
+}
+
+for (i in 1:length(data.predict)) {
+  data.predict[[i]] <- data.predict[[i]] %>% 
+    select(state, 
+           county, 
+           year, 
+           any_opioid, 
+           only_unspecified,
+           pop_density, 
+           dens_sq, 
+           phys, 
+           percent_female_head, 
+           income, 
+           poverty_rate, 
+           sex_dummy, 
+           race1, 
+           race2, 
+           mar_dummy, 
+           educ1, 
+           educ2, 
+           educ3, 
+           educ4, 
+           age1, 
+           age2, 
+           age3, 
+           age4, 
+           age5, 
+           age6, 
+           day1, 
+           day2, 
+           day3, 
+           day4, 
+           day5, 
+           day6, 
+           day7, 
+           place1, 
+           place2, 
+           place3, 
+           place4
+    )
+}
 
 # removing incomplete observations
-
-train.noNA <- train %>% select(
-  age_cat_<31, 
-  age_cat_41-50, 
-  age_cat_51-60
-)
 
 for (i in 1:length(data.train)) {
   data.train[[i]] <- data.train[[i]][complete.cases(data.train[[i]]), ]
 }
 
+for (i in 1:length(data.predict)) {
+  data.predict[[i]] <- data.predict[[i]][complete.cases(data.predict[[i]]), ]
+}
 
 
 
 
-
-
-
-
-
-# working with aggregated data... hold off for now
-
-all_years <- read_sas("C:/Users/niwi8/OneDrive - cumc.columbia.edu/Practicum/opioid_prediction/data/cleaned/all_poisoning_county.sas7bdat")
-
-all_years$age_cat <- as.factor(all_years$age_cat)
-all_years$sex <- as.factor(all_years$sex)
-all_years$race <- as.factor(all_years$race) 
-all_years$hispanic <- as.factor(all_years$hispanic)
-all_years$education <- as.factor(all_years$education)
-all_years$mar_cat <- as.factor(all_years$mar_cat)
-all_years$day <- as.factor(all_years$day)
-all_years$place <- as.factor(all_years$place)
-all_years$any_opioid <- as.factor(all_years$any_opioid)
-all_years$only_unspecified <- as.factor(all_years$only_unspecified)
