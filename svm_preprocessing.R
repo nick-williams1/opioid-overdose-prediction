@@ -163,6 +163,20 @@ for (i in 1:length(data.predict)) {
   data.predict[[i]] <- data.predict[[i]][complete.cases(data.predict[[i]]), ]
 }
 
+# further dividing data.train into train and test for validation of model accruracy
+
+train_index <- list()
+df.train <- list()
+df.test <- list()
+
+for (i in 1:length(data.train)) {
+  train_index[[i]] <-
+    createDataPartition(data.train[[i]]$any_opioid, 1, p = 0.75, list = F)
+  df.train[[i]] <- data.train[[i]][train_index[[i]], ]
+  df.test[[i]] <- data.train[[i]][-train_index[[i]], ]
+}
+
+
 
 
 
