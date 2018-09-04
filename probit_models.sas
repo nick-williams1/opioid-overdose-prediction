@@ -1,4 +1,4 @@
-﻿options nodate; 
+options nodate; 
 ods noproctitle; 
 
 libname cleaned "C:\Users\niwi8\OneDrive - cumc.columbia.edu\Practicum\opioid_prediction\data\cleaned";
@@ -21,7 +21,7 @@ proc logistic data = specified99 plots = roc outmodel = probitModel_99;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex | race hispanic mar_cat education day place age_cat
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit ctable; 
+							         percent_female_head income pop_density dens_sq phys / link = probit ctable; 
 	score out = scoreTrain99; 
 run;
 
@@ -71,7 +71,7 @@ proc logistic data = specified00 plots = roc outmodel = probitModel_00;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex | race hispanic mar_cat education day place age_cat
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain00; 
 run;
 
@@ -117,7 +117,7 @@ proc logistic data = specified01 plots = roc outmodel = probitModel_01;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain01; 
 run;
 
@@ -163,7 +163,7 @@ proc logistic data = specified02 plots = roc outmodel = probitModel_02;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain02; 
 run;
 
@@ -209,7 +209,7 @@ proc logistic data = specified03 plots = roc outmodel = probitModel_03;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain03; 
 run;
 
@@ -255,7 +255,7 @@ proc logistic data = specified04 plots = roc outmodel = probitModel_04;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain04; 
 run;
 
@@ -301,7 +301,7 @@ proc logistic data = specified05 plots = roc outmodel = probitModel_05;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain05; 
 run;
 
@@ -347,7 +347,7 @@ proc logistic data = specified06 plots = roc outmodel = probitModel_06;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain06; 
 run;
 
@@ -393,7 +393,7 @@ proc logistic data = specified07 plots = roc outmodel = probitModel_07;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain07; 
 run;
 
@@ -439,7 +439,7 @@ proc logistic data = specified08 plots = roc outmodel = probitModel_08;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain08; 
 run;
 
@@ -485,7 +485,7 @@ proc logistic data = specified09 plots = roc outmodel = probitModel_09;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain09; 
 run;
 
@@ -531,7 +531,7 @@ proc logistic data = specified10 plots = roc outmodel = probitModel_10;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain10; 
 run;
 
@@ -577,7 +577,7 @@ proc logistic data = specified11 plots = roc outmodel = probitModel_11;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain11; 
 run;
 
@@ -623,7 +623,7 @@ proc logistic data = specified12 plots = roc outmodel = probitModel_12;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain12; 
 run;
 
@@ -669,7 +669,7 @@ proc logistic data = specified13 plots = roc outmodel = probitModel_13;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain13; 
 run;
 
@@ -715,7 +715,7 @@ proc logistic data = specified14 plots = roc outmodel = probitModel_14;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain14; 
 run;
 
@@ -765,7 +765,7 @@ proc logistic data = specified15 plots = roc outmodel = probitModel_15;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain15; 
 run;
 
@@ -811,7 +811,7 @@ proc logistic data = specified16 plots = roc outmodel = probitModel_16;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex race age_cat sex*race hispanic mar_cat education day place 
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_female_head income pop_density dens_sq phys / link = probit; 
 	score out = scoreTrain16; 
 run;
 
