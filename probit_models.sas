@@ -1,7 +1,7 @@
-options nodate; 
+﻿options nodate; 
 ods noproctitle; 
 
-libname cleaned "C:\Users\niwi8\OneDrive\Documents\Practicum\opioid_prediction\data\cleaned";
+libname cleaned "C:\Users\niwi8\OneDrive - cumc.columbia.edu\Practicum\opioid_prediction\data\cleaned";
 
 * probit modeling for 1999; 
 
@@ -21,9 +21,13 @@ proc logistic data = specified99 plots = roc outmodel = probitModel_99;
 	class sex race hispanic mar_cat education day place age_cat; 
 	model any_opioid (event = "1") = sex | race hispanic mar_cat education day place age_cat
 									 poverty_rate percent_hs_drop percent_hs_grad percent_some_col
-							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit; 
+							         percent_col_grad percent_female_head income pop_density dens_sq phys / link = probit ctable; 
 	score out = scoreTrain99; 
 run;
+
+proc freq data = scoreTrain99; 
+	table F_any_opioid*I_any_opioid; 
+run; 
 
 proc logistic inmodel = probitModel_99; 
 	score data = unspecified99 out = scoreTest99; 
@@ -728,7 +732,11 @@ run;
 data specifiedCounts14; 
 	set specified14; 
 	keep any_opioid; 
-run;  
+run; 
+
+proc freq data = specifiedCounts14; 
+	table any_opioid;
+run; 
 
 data correctedCounts14; 
 	set specifiedCounts14 scoreTest14; 
@@ -830,3 +838,6 @@ title "Estimated corrected opioid overdoses: 2016";
 proc freq data = correctedCounts16; 
 	table any_opioid; 
 run; 
+
+
+ 
